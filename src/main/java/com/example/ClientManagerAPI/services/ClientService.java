@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -37,12 +38,26 @@ public class ClientService {
         return new ClientDTO(entity);
     }
 
+    @Transactional
+    public ClientDTO update(Long id, ClientDTO client) {
+        Client entity = repository.getReferenceById(id);
+        copyDtoToClient(client, entity);
+        entity = repository.save(entity);
+        return new ClientDTO(entity);
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (!repository.existsById(id)) throw new EntityNotFoundException("Usuário não existe");
+        repository.deleteById(id);
+    }
+
 
     private void copyDtoToClient(ClientDTO clientDTO, Client client) {
         client.setName(clientDTO.getName());
         client.setCpf(clientDTO.getCpf());
         client.setChildren(clientDTO.getChildren());
-        client.setIncome(client.getIncome());
-        client.setBirthDate(client.getBirthDate());
+        client.setIncome(clientDTO.getIncome());
+        client.setBirthDate(clientDTO.getBirthDate());
     }
 }

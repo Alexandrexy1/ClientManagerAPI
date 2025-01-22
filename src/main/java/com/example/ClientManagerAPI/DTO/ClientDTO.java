@@ -2,6 +2,7 @@ package com.example.ClientManagerAPI.DTO;
 
 import com.example.ClientManagerAPI.entities.Client;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
@@ -21,6 +22,7 @@ public class ClientDTO {
     @Positive(message = "Salário deve ser positivo")
     private Double income;
 
+    @PastOrPresent
     private LocalDate birthDate;
 
     @Positive(message = "Quantidade precisa ser positivo")

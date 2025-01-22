@@ -33,4 +33,16 @@ public class ClientController {
         entity = service.insert(entity);
         return new ResponseEntity<>(entity, HttpStatus.CREATED);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientDTO> update(@PathVariable Long id, @Valid @RequestBody ClientDTO entity) {
+        entity = service.update(id, entity);
+        return new ResponseEntity<>(entity, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
